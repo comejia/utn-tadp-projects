@@ -8,7 +8,7 @@ module Assertions
   end
 
   def deberia(param)
-    puts self.eql? param
+    self.eql? param
   end
 end
 
