@@ -24,6 +24,18 @@ module Assertions
       x < param
     }
   end
+
+  def uno_de_estos(*params)
+    if params.length == 1
+      return proc { |x|
+        params[0].any? x
+      }
+    end
+
+    proc { |x|
+      params.any? x
+    }
+  end
 end
 
 
