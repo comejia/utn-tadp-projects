@@ -4,7 +4,7 @@ module Assertions
   end
 
   def ser(param)
-    if param.is_a? Object
+    unless param.is_a? Proc
       return proc { |x|
         x.eql? param
       }
@@ -16,6 +16,12 @@ module Assertions
   def mayor_a(param)
     proc { |x|
       x > param
+    }
+  end
+
+  def menor_a(param)
+    proc { |x|
+      x < param
     }
   end
 end
