@@ -4,22 +4,43 @@ require_relative 'aserciones'
 class TADSpec
 
   def self.test(param)
-    Object.include Aserciones
+    Object.include Assertions
 
-    param.include Mixi
+    param.include SyntaxSugar
 
-    a = param.new
+    results = self.run_tests param
 
-    #a.send(:testear_que_una_persona_mayor_a_50_es_vieja)
-    a.testear_que_una_persona_mayor_es_viejo
+    print_test_results results
+
+  end
+
+  def self.run_tests(suite)
+    results = []
+    tests = self.get_suite_tests suite
+    suite_obj = suite.new
+
+    tests.each do |t|
+      results << { test_name: t, status: suite_obj.send(t.to_sym) }
+    end
+    results
+  end
+
+  def self.get_suite_tests(suite)
+    methods = suite.instance_methods false
+    methods.filter { |m| m.to_s.start_with?('testear_que') }
+  end
+
+  def self.print_test_results(results)
+    puts results
   end
 
 end
 
-module Mixi
+module SyntaxSugar
 
   def method_missing(symbol, *args, &block)
-    puts "MISSING"
+    puts "Simbolo no definido: #{symbol}"
+
     if symbol.to_s.start_with?('ser_')
       mensaje = symbol.to_s.gsub('ser_', '') + '?'
 
