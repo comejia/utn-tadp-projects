@@ -47,7 +47,7 @@ describe 'Assertions' do
   end
 
   it 'un proc no tiene que ser otro proc' do
-    expect(un_proc.deberia ser otro_proc).to be true
+    expect(un_proc.deberia ser otro_proc).to be false
   end
 
   it 'otro proc tiene que ser sí mismo' do
@@ -55,7 +55,7 @@ describe 'Assertions' do
   end
 
   it 'otro proc no tiene que ser un proc' do
-    expect(otro_proc.deberia ser un_proc).to be true
+    expect(otro_proc.deberia ser un_proc).to be false
   end
   # No funcionan tests de ser cuando se evaluan sobre bloques
 
