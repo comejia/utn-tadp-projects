@@ -9,22 +9,24 @@ class Persona
 end
 
 describe 'Assertions' do
-  let(:un_objeto) {
+  let(:un_proc) {
     proc {}
   }
+  let(:otro_proc) do
+    proc { true }
+  end
   let(:adulto) {
     Persona.new(90)
   }
   let(:joven) {
     Persona.new(18)
   }
-
   let(:persona) {
     Persona.new(30)
   }
 
   it 'un objeto entiende el mensaje "deberia"' do
-    expect(un_objeto.methods.include? :deberia).to be true
+    expect(un_proc.methods.include? :deberia).to be true
   end
 
   it 'un objeto deberia ser el mismo objeto' do
@@ -38,6 +40,24 @@ describe 'Assertions' do
   it 'un numero es diferente a otro si no es el mismo numero' do
     expect(7.deberia ser 8).to be false
   end
+
+  # No funcionan tests de ser cuando se evaluan sobre bloques
+  it 'un proc tiene que ser sí mismo' do
+    expect(un_proc.deberia ser un_proc).to be true
+  end
+
+  it 'un proc no tiene que ser otro proc' do
+    expect(un_proc.deberia ser otro_proc).to be true
+  end
+
+  it 'otro proc tiene que ser sí mismo' do
+    expect(otro_proc.deberia ser otro_proc).to be true
+  end
+
+  it 'otro proc no tiene que ser un proc' do
+    expect(otro_proc.deberia ser un_proc).to be true
+  end
+  # No funcionan tests de ser cuando se evaluan sobre bloques
 
   it 'un valor verdadero es siempre verdadero' do
     expect(true.deberia ser true).to be true
