@@ -37,10 +37,3 @@ module Assertions
     }
   end
 end
-
-
-class Object
-  include Assertions
-end
-
-
