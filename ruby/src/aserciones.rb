@@ -43,4 +43,23 @@ module Assertions
       x.methods.include? param
     end
   end
+
+  def en(&bloque)
+    bloque
+  end
+
+  def explotar_con(param)
+    proc do |x|
+      begin
+        x.call
+      rescue param
+        result = true
+      rescue # Other error
+        result = false
+      else # No error
+        result = false
+      end
+      result
+    end
+  end
 end
