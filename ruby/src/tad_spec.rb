@@ -1,4 +1,3 @@
-require_relative 'una_suite'
 require_relative 'aserciones'
 
 class TADSpec
