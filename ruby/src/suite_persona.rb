@@ -67,4 +67,25 @@ class SuitePersona
     p = Persona.new(20)
     p.deberia tener_edad uno_de_estos [7, 55, true, "lista", 20]
   end
+
+  def testear_que_una_persona_entiende_un_mensaje_propio
+    p = Persona.new(20)
+    p.deberia entender :viejo?
+  end
+
+  def testear_que_una_persona_no_entiende_un_mensaje_desconocido
+    p = Persona.new(20)
+    p.deberia entender :nombre
+  end
+
+  def testear_que_una_persona_entiende_un_mensaje_heredado
+    p = Persona.new(20)
+    p.deberia entender :class
+  end
+
+  # NO lo encuentra :(
+  def testear_que_una_persona_entiende_un_mensaje_sobreescrito
+    p = Persona.new(20)
+    p.deberia entender :method_missing
+  end
 end

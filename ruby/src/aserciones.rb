@@ -36,4 +36,11 @@ module Assertions
       params.any? x
     }
   end
+
+  def entender(param)
+    proc do |x|
+      puts x.methods
+      x.methods.include? param
+    end
+  end
 end
