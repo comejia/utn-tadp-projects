@@ -83,7 +83,6 @@ class SuitePersona
     p.deberia entender :class
   end
 
-  # NO lo encuentra :(
   def testear_que_una_persona_entiende_un_mensaje_sobreescrito
     p = Persona.new(20)
     p.deberia entender :method_missing

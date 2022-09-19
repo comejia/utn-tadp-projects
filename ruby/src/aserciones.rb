@@ -39,8 +39,7 @@ module Assertions
 
   def entender(param)
     proc do |x|
-      puts x.methods
-      x.methods.include? param
+      x.respond_to? param, true
     end
   end
 
