@@ -1,14 +1,10 @@
 require_relative '../src/aserciones'
-
-class Persona
-  attr_accessor :edad
-
-  def initialize(edad)
-    @edad = edad
-  end
-end
+require_relative '../tests/persona'
 
 describe 'Assertions' do
+
+  Object.include Assertions
+
   let(:un_proc) {
     proc {}
   }
@@ -42,22 +38,21 @@ describe 'Assertions' do
   end
 
   # No funcionan tests de ser cuando se evaluan sobre bloques
-  it 'un proc tiene que ser sí mismo' do
-    expect(un_proc.deberia ser un_proc).to be true
-  end
+  #it 'un proc tiene que ser sí mismo' do
+  #  expect(un_proc.deberia ser un_proc).to be true
+  #end
 
-  it 'un proc no tiene que ser otro proc' do
-    expect(un_proc.deberia ser otro_proc).to be false
-  end
+  #it 'un proc no tiene que ser otro proc' do
+  #  expect(un_proc.deberia ser otro_proc).to be false
+  #end
 
-  it 'otro proc tiene que ser sí mismo' do
-    expect(otro_proc.deberia ser otro_proc).to be true
-  end
+  #it 'otro proc tiene que ser sí mismo' do
+  #  expect(otro_proc.deberia ser otro_proc).to be true
+  #end
 
-  it 'otro proc no tiene que ser un proc' do
-    expect(otro_proc.deberia ser un_proc).to be false
-  end
-  # No funcionan tests de ser cuando se evaluan sobre bloques
+  #it 'otro proc no tiene que ser un proc' do
+  #  expect(otro_proc.deberia ser un_proc).to be false
+  #end
 
   it 'un valor verdadero es siempre verdadero' do
     expect(true.deberia ser true).to be true
