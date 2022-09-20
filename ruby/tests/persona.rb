@@ -6,6 +6,6 @@ class Persona
   end
 
   def viejo?
-    @edad > 50
+    self.edad > 50
   end
 end
