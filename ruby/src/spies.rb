@@ -22,23 +22,6 @@ class SpyMethod
   end
 end
 
-class Spy
-  def initialize(obj)
-    @spied_methods = {}
-    methods = obj.class.instance_methods(false)
-    methods.each do |method_name|
-      m = obj.method(method_name)
-      spyMethod = SpyMethod.new m
-      @spied_methods[method_name] = spyMethod
-      self.singleton_class.send(:define_method, method_name, &spyMethod.method(:spiedMethod))
-    end
-  end
-
-  def getMethod(method_name)
-    @spied_methods[method_name]
-  end
-end
-
 class Command
   attr_accessor :prev
   def initialize(symbol,*args)
