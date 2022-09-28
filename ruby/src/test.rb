@@ -5,4 +5,8 @@ class Test
     @name = name
   end
 
+  def execute(context)
+    @status = context.send(@name)
+  end
+
 end

@@ -8,7 +8,19 @@ class Suite
 
   def add_tests(tests)
     tests.each do |test|
-      @tests.push(Test.new(test))
+      add_test(test)
+    end
+  end
+
+  def add_test(test)
+    @tests.push(Test.new(test))
+  end
+
+  def run_tests
+    name.include SyntaxSugar
+    context = name.new
+    @tests.each do |test|
+      test.execute context
     end
   end
 end
