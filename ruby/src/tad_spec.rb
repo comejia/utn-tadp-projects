@@ -15,12 +15,10 @@ class TADSpec
 
     #results = []
     @suites.each do |suite|
-      #suite.include SyntaxSugar
-      run_tests suite
-      #results.append(run_tests suite)
+      suite.run_tests
     end
 
-    print_test_results @suites#results
+    print_test_results @suites
 
   end
 
