@@ -4,7 +4,6 @@ module SyntaxSugar
 
     if symbol.to_s.start_with?('ser_')
       mensaje = symbol.to_s.gsub('ser_', '') + '?'
-
       return proc do |x|
         x.send(mensaje.to_sym)
       end
@@ -20,11 +19,12 @@ module SyntaxSugar
         end
         result
       end
+    else
+      super
     end
-    nil
+    
   end
-
-  def respond_to_missing?(asd, val)
-    puts "RESPOND TO MISSING"
+  def respond_to_missing?(symbol, priv=false)
+    symbol.to_s.start_with?('ser_') || symbol.to_s.start_with?('tener_') || super
   end
 end

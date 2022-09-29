@@ -52,13 +52,12 @@ module Assertions
       begin
         x.call
       rescue param
-        result = true
+        true
       rescue # Other error
-        result = false
+        false
       else # No error
-        result = false
+        false
       end
-      result
     end
   end
 end
