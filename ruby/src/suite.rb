@@ -1,8 +1,8 @@
 class Suite
-  attr_accessor :name, :tests
+  attr_accessor :cls, :tests
 
   def initialize(name)
-    @name = name
+    @cls = name
     @tests = []
   end
 
@@ -17,10 +17,26 @@ class Suite
   end
 
   def run_tests
-    name.include SyntaxSugar
-    context = name.new
+    cls.include SyntaxSugar
+    context = cls.new
     @tests.each do |test|
       test.execute context
     end
+  end
+
+  def total
+    @tests.length
+  end
+
+  def passed
+    @tests.filter { |test| test.status == true }
+  end
+
+  def failed
+    @tests.filter { |test| test.status == false }
+  end
+
+  def broken
+    @tests.filter { |test| test.status == "broken" }
   end
 end

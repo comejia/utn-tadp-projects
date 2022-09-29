@@ -2,6 +2,7 @@ require_relative 'aserciones'
 require_relative 'syntax_sugar'
 require_relative 'suite'
 require_relative 'test'
+require_relative 'report'
 
 class TADSpec
 
@@ -9,20 +10,17 @@ class TADSpec
     @suites = []
     Object.include Assertions
 
-    #suites = get_suites *params
+    load_suites *params
 
-    get_suites *params
-
-    #results = []
     @suites.each do |suite|
       suite.run_tests
     end
 
-    print_test_results @suites
-
+    report = Report.new @suites
+    report.print
   end
 
-  def self.get_suites(*params)
+  def self.load_suites(*params)
     case params.length
     when 0
       suites = ObjectSpace.each_object(Class).select { |cls| is_suite?(cls) }
@@ -45,20 +43,6 @@ class TADSpec
     end
   end
 
-  def self.run_tests(suite)
-    #puts suite
-    #results = []
-    #tests = self.get_tests suite
-    suite.name.include SyntaxSugar
-    suite_obj = suite.name.new
-
-    suite.tests.each do |test|
-      #results << { suite_name: suite, test_name: test, status: suite_obj.send(test.to_sym) }
-      test.status = suite_obj.send(test.name)
-    end
-    #results
-  end
-
   def self.get_tests(suite)
     methods = suite.instance_methods false
     methods.filter { |method| is_test?(method) }
@@ -70,12 +54,6 @@ class TADSpec
 
   def self.is_test?(method)
     method.to_s.start_with?('testear_que')
-  end
-
-  def self.print_test_results(results)
-    results.each do |result|
-      puts result
-    end
   end
 
 end

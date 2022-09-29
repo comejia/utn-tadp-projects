@@ -1,12 +1,14 @@
 class Test
-  attr_accessor :name, :status, :reason
+  attr_reader :status
 
   def initialize(name)
-    @name = name
+    @test_name = name
+    @status = false
+    @reason = ""
   end
 
   def execute(context)
-    @status = context.send(@name)
+    @status = context.send(@test_name)
   end
 
 end
