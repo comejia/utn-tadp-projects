@@ -1,7 +1,5 @@
 module SyntaxSugar
   def method_missing(symbol, *args, &block)
-    puts "Simbolo no definido: #{symbol}"
-
     if symbol.to_s.start_with?('ser_')
       mensaje = symbol.to_s.gsub('ser_', '') + '?'
 
