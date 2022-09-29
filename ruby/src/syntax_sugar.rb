@@ -1,23 +1,35 @@
 module SyntaxSugar
   def method_missing(symbol, *args, &block)
-    puts "Simbolo no definido: #{symbol}"
-
     if symbol.to_s.start_with?('ser_')
       mensaje = symbol.to_s.gsub('ser_', '') + '?'
       return proc do |x|
-        x.send(mensaje.to_sym)
+        result = x.send(mensaje.to_sym)
+        {
+          result: result,
+          description: result ? "." : "Espera que #{x} sea #{mensaje}"
+        }
       end
     elsif symbol.to_s.start_with?('tener_')
       atributo = '@' + symbol.to_s.gsub('tener_', '')
       return proc do |x|
-        value = x.instance_variable_get(atributo.to_sym)
-
-        if args[0].is_a? Proc
-          result = args[0].call(value)
+        unless x.instance_variables.include?(atributo.to_sym)
+          {
+            result: false,
+            description: "#{x} no tiene el atributo #{atributo}"
+          }
         else
-          result = args[0].eql? value
+          value = x.instance_variable_get(atributo.to_sym)
+          if args[0].is_a? Proc
+            args[0].call(value)
+          else
+            result = args[0].eql? value
+            {
+              result: result,
+              description: result ? "." : "Espera que #{x} tenga #{atributo}"
+            }
+          end
+
         end
-        result
       end
     else
       super
