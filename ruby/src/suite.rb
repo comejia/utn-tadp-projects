@@ -29,14 +29,14 @@ class Suite
   end
 
   def passed
-    @tests.filter { |test| test.status == true }
+    @tests.filter(&:passed?)
   end
 
   def failed
-    @tests.filter { |test| test.status == false }
+    @tests.filter(&:failed?)
   end
 
   def broken
-    @tests.filter { |test| test.status == "broken" }
+    @tests.filter(&:broken?)
   end
 end
