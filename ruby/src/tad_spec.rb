@@ -6,11 +6,11 @@ require_relative 'report'
 
 class TADSpec
 
-  def self.testear(*params)
+  def self.testear(suite=nil,*tests)
     @suites = []
     Object.include Assertions
 
-    load_suites *params
+    load_suites suite,tests
 
     @suites.each do |suite|
       suite.run_tests
@@ -20,36 +20,35 @@ class TADSpec
     report.print
   end
 
-  def self.load_suites(*params)
-    case params.length
-    when 0
+  def self.load_suites(suite,tests)
+    if suite.nil?
       suites = ObjectSpace.each_object(Class).select { |cls| is_suite?(cls) }
       suites.each do |suite|
         new_suite = Suite.new suite
         new_suite.add_tests(get_tests suite)
         @suites.push(new_suite)
       end
-    when 1
-      suite = Suite.new params.first
-      suite.add_tests(get_tests params.first)
-      @suites.push(suite)
     else
-      suite = Suite.new params.first
-      tests = params.drop(1).map do |test|
-        test.to_s.prepend("testear_que_").to_sym
+      suiteInstance = Suite.new suite
+      if tests.empty?
+        tests = get_tests suite
+      else
+        tests = tests.map do |test|
+          test.to_s.prepend("testear_que_").to_sym
+        end
       end
-      suite.add_tests(tests)
-      @suites.push(suite)
+      suiteInstance.add_tests(tests)
+      @suites.push(suiteInstance)
     end
   end
 
   def self.get_tests(suite)
-    methods = suite.instance_methods false
+    methods = suite.instance_methods
     methods.filter { |method| is_test?(method) }
   end
 
   def self.is_suite?(suite)
-    suite.instance_methods(false).any? { |method| is_test?(method) }
+    suite.instance_methods().any? { |method| is_test?(method) }
   end
 
   def self.is_test?(method)

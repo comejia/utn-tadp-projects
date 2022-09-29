@@ -13,7 +13,7 @@ class Suite
   end
 
   def add_test(test)
-    @tests.push(Test.new(test))
+    @tests.push(Test.new(test)) if @cls.instance_methods.include? test 
   end
 
   def run_tests
