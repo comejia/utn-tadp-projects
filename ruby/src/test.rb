@@ -7,16 +7,17 @@ class Test
   end
 
   def execute(context)
-    @status = begin 
-      context.send(@test_name)
-    rescue => e
-      {
-        result: "broken",
-        description: e.message + "\n"+ e.backtrace.join("\n")
-      }
-              end
-    puts(@test_name,@status.fetch(:description))
+    @status =
+      begin
+        context.send(@test_name)
+      rescue => e
+        {
+          result: "broken",
+          description: e.message + "\n" + e.backtrace.join("\n")
+        }
+      end
   end
+
   def failed?
     @status.fetch(:result) == false
   end
@@ -27,6 +28,10 @@ class Test
 
   def broken?
     @status.fetch(:result) == "broken"
+  end
+
+  def description
+    @status.fetch(:description)
   end
 
 end
