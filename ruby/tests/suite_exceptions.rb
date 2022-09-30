@@ -2,7 +2,7 @@ require_relative 'persona'
 
 class SuiteExceptions
   def testear_que_no_se_puede_dividir_por_0
-    en { 7/0 }.deberia explotar_con ZeroDivisionError
+    en { 7 / 0 }.deberia explotar_con ZeroDivisionError
   end
 
   def testear_que_no_existe_un_metodo
@@ -21,6 +21,6 @@ class SuiteExceptions
   end
 
   def testear_que_evaluar_un_error_con_otro_falla
-    en { 7/0 }.deberia explotar_con NoMethodError
+    en { 7 / 0 }.deberia explotar_con NoMethodError
   end
 end

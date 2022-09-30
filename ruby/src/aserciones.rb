@@ -69,7 +69,7 @@ module Assertions
       rescue param
         {
           result: true,
-          description: "." 
+          description: "."
         }
       rescue => e # Other error
         {

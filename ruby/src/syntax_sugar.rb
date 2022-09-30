@@ -34,9 +34,9 @@ module SyntaxSugar
     else
       super
     end
-    
   end
-  def respond_to_missing?(symbol, priv=false)
+
+  def respond_to_missing?(symbol, priv = false)
     symbol.to_s.start_with?('ser_') || symbol.to_s.start_with?('tener_') || super
   end
 end

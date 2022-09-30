@@ -6,11 +6,11 @@ require_relative 'report'
 
 class TADSpec
 
-  def self.testear(suite=nil,*tests)
+  def self.testear(suite = nil, *tests)
     @suites = []
     Object.include Assertions
 
-    load_suites suite,tests
+    load_suites suite, tests
 
     @suites.each do |suite|
       suite.run_tests
@@ -20,7 +20,7 @@ class TADSpec
     report.print
   end
 
-  def self.load_suites(suite,tests)
+  def self.load_suites(suite, tests)
     if suite.nil?
       suites = ObjectSpace.each_object(Class).select { |cls| is_suite?(cls) }
       suites.each do |suite|
@@ -29,7 +29,7 @@ class TADSpec
         @suites.push(new_suite)
       end
     else
-      suiteInstance = Suite.new suite
+      suite_instance = Suite.new suite
       if tests.empty?
         tests = get_tests suite
       else
@@ -37,8 +37,8 @@ class TADSpec
           test.to_s.prepend("testear_que_").to_sym
         end
       end
-      suiteInstance.add_tests(tests)
-      @suites.push(suiteInstance)
+      suite_instance.add_tests(tests)
+      @suites.push(suite_instance)
     end
   end
 
@@ -48,7 +48,7 @@ class TADSpec
   end
 
   def self.is_suite?(suite)
-    suite.instance_methods().any? { |method| is_test?(method) }
+    suite.instance_methods.any? { |method| is_test?(method) }
   end
 
   def self.is_test?(method)
