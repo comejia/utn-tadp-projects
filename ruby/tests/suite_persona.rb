@@ -32,11 +32,10 @@ class SuitePersona
     p.deberia ser_viejo
   end
 
-  # Comento solo para que no explote
-  #def testear_que_una_persona_no_entiend_un_mensaje
-  #p = Persona.new(18)
-  #p.deberia ser_joven
-  #end
+  def testear_que_una_persona_no_entiende_un_mensaje
+  p = Persona.new(18)
+  p.deberia ser_joven
+  end
 
   def testear_que_una_persona_tenga_25
     p = Persona.new(25)

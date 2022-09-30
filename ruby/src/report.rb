@@ -1,3 +1,5 @@
+require 'colorize'
+
 class Report
 
   def initialize(suites)
@@ -13,19 +15,25 @@ class Report
   end
 
   def summary
-    puts "Total #{@total}, Passed: #{@passed.size}, Failed: #{@failed.size}, Broken #{@broken.size}"
+    puts "\nTotal #{@total}, Passed: #{@passed.size}, Failed: #{@failed.size}, Broken #{@broken.size}\n"
 
-    #unless @passed.empty?
-    # puts "Tests exitosos:".green
-    # @passed.each do |t|
-    #   puts "\t #{t.test_name}"
-    # end
-    #end
-    #unless @failed.empty?
-    # puts "Tests fallidos:".red
-    # @failed.each do |t|
-    #   puts "\t #{t.test_name}, reason: #{t.reason}"
-    # end
-    #end
+    unless @passed.empty?
+      puts "\nTests exitosos:".green
+      @passed.each do |t|
+        puts "\tname: #{t.test_name}"
+      end
+    end
+    unless @failed.empty?
+      puts "\nTests fallidos:".red
+      @failed.each do |t|
+        puts "\tname: #{t.test_name}, reason: #{t.description}"
+      end
+    end
+    unless @broken.empty?
+      puts "\nTests explotados:".yellow
+      @broken.each do |t|
+        puts "\tname: #{t.test_name}, reason: #{t.description}"
+      end
+    end
   end
 end

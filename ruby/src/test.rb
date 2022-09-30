@@ -16,7 +16,6 @@ class Test
           description: e.message + "\n" + e.backtrace.join("\n")
         }
       end
-    puts(@test_name, @status.fetch(:description))
   end
 
   def failed?
@@ -29,6 +28,10 @@ class Test
 
   def broken?
     @status.fetch(:result) == "broken"
+  end
+
+  def description
+    @status.fetch(:description)
   end
 
 end
