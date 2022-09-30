@@ -8,13 +8,16 @@ class TADSpec
 
   def self.testear(suite = nil, *tests)
     @suites = []
-    Object.include Assertions
 
     load_suites suite, tests
+
+    before_all
 
     @suites.each do |suite|
       suite.run_tests
     end
+
+    after_all
 
     report = Report.new @suites
     report.print
@@ -53,6 +56,16 @@ class TADSpec
 
   def self.is_test?(method)
     method.to_s.start_with?('testear_que')
+  end
+
+  def self.before_all
+    Object.include Assertions
+  end
+
+  def self.after_all
+    Assertions.instance_methods(false).each do |method|
+      Object.undef_method(method)
+    end
   end
 
 end
