@@ -12,6 +12,7 @@ class Report
 
   def print
     summary
+    nil
   end
 
   def summary
