@@ -1,6 +1,16 @@
 require_relative 'persona'
 require_relative '../src/mocks'
 
+module A
+  def a
+    :a
+  end
+end
+
+class B
+  include A
+end
+
 class SuitePersonaWithMocks
   using Mocks
 
@@ -19,4 +29,14 @@ class SuitePersonaWithMocks
 
     viejos.deberia ser [nico, axel]
   end
+
+  def testear_que_puedo_mockear_metodo_de_un_modulo
+    A.mockear(:a) do
+      :b
+    end
+
+    b = B.new
+    b.a.deberia ser :b
+  end
 end
+

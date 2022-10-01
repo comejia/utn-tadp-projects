@@ -2,7 +2,9 @@ module Assertions
   def deberia(param)
     param.call(self)
   end
+end
 
+module Conditions
   def ser(param)
     unless param.is_a? Proc
       return proc { |x|

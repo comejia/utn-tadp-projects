@@ -4,6 +4,8 @@ class Suite
   def initialize(name)
     @cls = name
     @tests = []
+    cls.include Conditions
+    cls.include SyntaxSugar
   end
 
   def add_tests(tests)
@@ -17,7 +19,6 @@ class Suite
   end
 
   def run_tests
-    cls.include SyntaxSugar
     context = cls.new
     @tests.each do |test|
       test.execute context
