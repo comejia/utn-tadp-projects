@@ -11,20 +11,29 @@ class SpyMethod
     @method.call *args
   end
 
-  def veces(quantiy)
-    @calls.eql? quantiy
+  def veces(quantity)
+    result = @calls.eql?(quantity)
+    {
+      result: result,
+      description: result ? "." : "Esperaba que se llame #{quantity} veces y se llamo #{@calls}"
+    }
   end
 
   def con_argumentos(*args)
-    @argsCalled.any? do |argsCalled|
+    result = @argsCalled.any? do |argsCalled|
       args == argsCalled
     end
+    {
+      result: result,
+      description: result ? "." : "No se llamo con estos #{args}"
+    }
   end
 end
 
 class Command
   attr_accessor :prev
-  def initialize(symbol,*args)
+
+  def initialize(symbol, *args)
     @symbol = symbol
     @args = args
   end
@@ -35,17 +44,17 @@ class Command
       if @prev.nil?
         return elem.send(@symbol, *@args)
       end
-      return @prev.call(elem).send(@symbol,*@args)
+      return @prev.call(elem).send(@symbol, *@args)
     end
     return false
   end
+
   private def method_missing(symbol, *args)
-    c = Command.new(symbol,*args)
+    c = Command.new(symbol, *args)
     c.prev = self
     return c
   end
 end
-
 
 module Spies
   refine Object do
@@ -53,9 +62,11 @@ module Spies
       methods = obj.class.instance_methods(false)
       obj.singleton_class.class_eval do
         @@spyMethods = {}
-        def self.setMethod(name,method)
+
+        def self.setMethod(name, method)
           @@spyMethods[name] = method
         end
+
         def getMethod(*args)
           @@spyMethods[args[0]]
         end
@@ -63,14 +74,14 @@ module Spies
       methods.each do |method_name|
         m = obj.method(method_name)
         spyMethod = SpyMethod.new m
-        obj.singleton_class.setMethod(method_name,spyMethod)
+        obj.singleton_class.setMethod(method_name, spyMethod)
         obj.singleton_class.send(:define_method, method_name, &spyMethod.method(:spiedMethod))
       end
       return obj
     end
 
     def haber_recibido(symbol)
-      Command.new(:getMethod,symbol)
+      Command.new(:getMethod, symbol)
     end
   end
 end
