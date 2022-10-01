@@ -1,5 +1,5 @@
+require 'colorize'
 require_relative './src/tad_spec'
-require_relative './tests/suite_persona_with_mock'
+require_relative './tests/suites'
 
-# TADSpec.testear SuitePersona
 TADSpec.testear SuitePersonaWithMocks
