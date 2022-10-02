@@ -13,7 +13,7 @@ class Test
       rescue => e
         {
           result: "broken",
-          description: e.message + "\n" + e.backtrace.join("\n")
+          description: "#{e.message} (#{e.class})\n\t#{e.backtrace.join("\n\t")}"
         }
       end
   end
