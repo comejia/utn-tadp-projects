@@ -4,6 +4,22 @@ require_relative '../src/spies'
 class SuitePersonaWithSpies
   using Spies
 
+  def testear_que_se_use_viejo_se_llama_a_edad
+    pato = Persona.new(23)
+    pato = espiar(pato)
+    pato.viejo?
+
+    pato.deberia haber_recibido(:edad)
+  end
+
+  def testear_que_se_use_edad_deberia_haber_recibido_viejo_falla
+    pato = Persona.new(23)
+    pato = espiar(pato)
+    pato.edad
+
+    pato.deberia haber_recibido(:viejo?)
+  end
+
   def testear_que_se_use_la_edad
     pato = Persona.new(23)
     pato = espiar(pato)

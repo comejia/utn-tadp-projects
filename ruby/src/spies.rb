@@ -11,6 +11,16 @@ class SpyMethod
     @method.call *args
   end
 
+  def fetch(symbol)
+    result = @calls >= 1
+    if symbol == :result
+      return result
+    end
+    if symbol == :description
+      return result ? "." : "No se llamo al metodo"
+    end
+  end
+
   def veces(quantity)
     result = @calls.eql?(quantity)
     {
