@@ -33,8 +33,8 @@ class SuitePersona
   end
 
   def testear_que_una_persona_no_entiende_un_mensaje
-  p = Persona.new(18)
-  p.deberia ser_joven
+    p = Persona.new(18)
+    p.deberia ser_joven
   end
 
   def testear_que_una_persona_tenga_25
@@ -45,11 +45,6 @@ class SuitePersona
   def testear_que_una_persona_sin_nombre_falla
     p = Persona.new(25)
     p.deberia tener_nombre "pepe"
-  end
-
-  def testear_que_una_persona_sin_nombre_es_nil
-    p = Persona.new(25)
-    p.deberia tener_nombre nil
   end
 
   def testear_que_una_persona_tenga_edad_mayor_a_25
