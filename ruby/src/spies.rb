@@ -25,7 +25,7 @@ class SpyMethod
     end
     {
       result: result,
-      description: result ? "." : "No se llamo con estos #{args}"
+      description: result ? "." : "No se llamo con estos #{args} argumentos"
     }
   end
 end
@@ -46,7 +46,10 @@ class Command
       end
       return @prev.call(elem).send(@symbol, *@args)
     end
-    return false
+    return {
+      result: false,
+      description: "El objeto #{elem} no fue espiado"
+    }
   end
 
   private def method_missing(symbol, *args)

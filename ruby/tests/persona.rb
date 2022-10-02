@@ -16,6 +16,6 @@ class PersonaHome
   end
 
   def personas_viejas
-    self.todas_las_personas.select{|p| p.viejo?}
+    self.todas_las_personas.select { |p| p.viejo? }
   end
 end
