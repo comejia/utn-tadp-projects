@@ -29,7 +29,7 @@ class SuitePersonaWithSpies
     pato.deberia haber_recibido(:viejo?).con_argumentos
   end
 
-  def testear_que_se_usa_metodo
+  def testear_que_se_usa_un_metodo
     pato = Persona.new(23)
     pato = espiar(pato)
     pato.viejo?
@@ -37,7 +37,7 @@ class SuitePersonaWithSpies
     pato.deberia haber_recibido(:viejo?).veces(1)
   end
 
-  def testear_que_se_usa_metodo_a_traves_de_otro
+  def testear_que_se_usa_un_metodo_a_traves_de_otro
     pato = Persona.new(23)
     pato = espiar(pato)
     pato.viejo?
@@ -83,6 +83,6 @@ class SuitePersonaWithSpies
     persona = Persona.new(23)
     persona.viejo?
 
-    persona.deberia haber_recibido(:edad).veces(1)
+    persona.deberia haber_recibido(:edad)
   end
 end
