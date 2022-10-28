@@ -1,4 +1,4 @@
-import heroes.{Aventurero, Guerrero, Ladron, Mago}
+import heroes.{Aventurero, Grupo, Guerrero, Ladron, Mago}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers._
 
@@ -48,5 +48,38 @@ class HeroesSpec extends AnyFreeSpec {
     }
   }
 
+  "Grupos" - {
+
+    "un grupo esta compuesto de aventureros vivos" in {
+      val mago = new Mago(10, 10, 4)
+      val ladron = new Ladron(10, 10, 4, 5)
+      val muerto = new Aventurero(10, 10, 10, 0)
+
+      val grupo = new Grupo(List(mago, ladron, muerto))
+
+      grupo.aventureros shouldBe List(mago, ladron)
+    }
+
+    "todo grupo tiene un lider" in {
+      val mago = new Mago(10, 10, 4)
+      val ladron = new Ladron(10, 10, 4, 5)
+      val muerto = new Aventurero(10, 10, 10, 0)
+
+      val grupo = new Grupo(List(mago, ladron, muerto))
+
+      grupo.lider shouldBe mago
+    }
+
+    "si el lider del grupo muere, se pasa el liderazgo al siguente en la lista" in {
+      val mago = new Mago(10, 10, 4)
+      val ladron = new Ladron(10, 10, 4, 5)
+      val muerto = new Aventurero(10, 10, 10, 0)
+
+      val grupo = new Grupo(List(mago, ladron, muerto))
+      mago.salud = 0
+
+      grupo.lider shouldBe ladron
+    }
+  }
 
 }

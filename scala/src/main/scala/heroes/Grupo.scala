@@ -4,9 +4,9 @@ class Grupo(val heroes: List[Aventurero]) {
 
   var cofreComun: Set[Item] = Set()
 
-  var lider: Aventurero = heroesVivos().head
+  def aventureros(): List[Aventurero] = heroes.filter(h => !h.muerto())
 
-  def heroesVivos(): List[Aventurero] = heroes.filter(h => !h.muerto())
+  def lider(): Aventurero = aventureros().head
 }
 
 class Item
