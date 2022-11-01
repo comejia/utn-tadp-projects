@@ -1,6 +1,6 @@
-import heroes.{Aventurero, Grupo, Guerrero, Ladron, Mago}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers._
+import viejo.{Aventurero, Grupo, Guerrero, Ladron, Mago}
 
 class HeroesSpec extends AnyFreeSpec {
 

@@ -1,4 +1,6 @@
-package heroes
+package viejo
+
+import heroes.Aventurero
 
 class Grupo(val heroes: List[Aventurero]) {
 
@@ -7,6 +9,8 @@ class Grupo(val heroes: List[Aventurero]) {
   def aventureros(): List[Aventurero] = heroes.filter(h => !h.muerto())
 
   def lider(): Aventurero = aventureros().head
+
+  def tieneLlave(): Boolean = cofreComun.contains(c => c.equals(LLave))
 }
 
 class Item

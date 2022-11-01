@@ -1,4 +1,6 @@
-package heroes
+package viejo
+
+import heroes.Aventurero
 
 class Ladron(fuerza: Double, velocidad: Int, nivel: Int, private var _habilidad: Int)
   extends Aventurero(fuerza, velocidad, nivel) {
