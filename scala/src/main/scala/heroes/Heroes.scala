@@ -1,6 +1,7 @@
 package heroes
 
-case class Aventurero(caracteristica: Caracteristica, trabajo: Trabajo) {
+case class Aventurero(caracteristica: Caracteristica, trabajo: Trabajo, criterio: Criterio) {
+
   def fuerza(): Double = trabajo.fuerza(caracteristica)
 
   def muerto(): Boolean = caracteristica.salud <= 0
@@ -8,9 +9,15 @@ case class Aventurero(caracteristica: Caracteristica, trabajo: Trabajo) {
   def abrir(puerta: Puerta, cofre: Set[Item]): Boolean = {
     trabajo.abrir(puerta, cofre, caracteristica)
   }
+
+  def danio(danio: Int): Unit = {
+    caracteristica.salud = caracteristica.salud - danio
+  }
+
+  def aplicarCriterio(grupo: Grupo): Boolean = criterio(grupo)
 }
 
-case class Caracteristica(fuerza: Int, velocidad: Int, nivel: Int, salud: Int = 100)
+case class Caracteristica(fuerza: Int, velocidad: Int, nivel: Int, var salud: Int = 100)
 
 abstract class Trabajo {
   def fuerza(caracteristica: Caracteristica): Double
@@ -76,8 +83,31 @@ trait Hechizo
 
 case object Vislumbrar extends Hechizo
 
+trait Criterio extends (Grupo => Boolean)
+case object Introvertido extends Criterio {
+  override def apply(grupo: Grupo): Boolean = grupo.heroes.size <= 3
+}
+
+case object Bigote extends Criterio {
+  override def apply(grupo: Grupo): Boolean = {
+    grupo.heroes.exists(h => h match {
+      case Aventurero(_,_,Ladron(_)) => true
+      case _ => false
+    })
+  }
+}
+
+case class Interesado(preferencia: Item) extends Criterio {
+  override def apply(grupo: Grupo): Boolean = grupo.cofreComun.contains(preferencia)
+}
+
+case object Loquito extends Criterio {
+  override def apply(grupo: Grupo): Boolean = false
+}
+
 
 case class Grupo(heroes: List[Aventurero]) {
+
   var cofreComun: Set[Item] = Set()
 
   def aventureros(): List[Aventurero] = heroes.filter(h => !h.muerto())
@@ -87,6 +117,19 @@ case class Grupo(heroes: List[Aventurero]) {
   // TODO: Devolver monada?
   def abrirPuerta(puerta: Puerta): Boolean = {
     heroes.exists(h => h.abrir(puerta, cofreComun))
+  }
+
+  def agregarItem(item: Item): Unit = {
+    cofreComun = Set(cofreComun.+(item))
+  }
+
+  def perderSalud(danio: Int): Unit = {
+    heroes.foreach(h => h.danio(danio))
+  }
+
+  def eliminarElMasLento(): Unit = {
+    val heroe: Aventurero = heroes.minBy(h => h.caracteristica.velocidad)
+    heroe.danio(100)
   }
 }
 
