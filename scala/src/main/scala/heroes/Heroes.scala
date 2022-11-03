@@ -11,10 +11,14 @@ case class Aventurero(caracteristica: Caracteristica, trabajo: Trabajo, criterio
   }
 
   def danio(danio: Int): Unit = {
-    caracteristica.salud = caracteristica.salud - danio
+    caracteristica.salud -= danio
   }
 
-  def aplicarCriterio(grupo: Grupo): Boolean = criterio(grupo)
+  def aplicaCriterio(grupo: Grupo): Boolean = criterio(grupo)
+
+  def subirNivel(): Unit = {
+    caracteristica.nivel += 1
+  }
 }
 
 case class Caracteristica(fuerza: Int, velocidad: Int, nivel: Int, var salud: Int = 100)
@@ -84,6 +88,7 @@ trait Hechizo
 case object Vislumbrar extends Hechizo
 
 trait Criterio extends (Grupo => Boolean)
+
 case object Introvertido extends Criterio {
   override def apply(grupo: Grupo): Boolean = grupo.heroes.size <= 3
 }
@@ -91,7 +96,7 @@ case object Introvertido extends Criterio {
 case object Bigote extends Criterio {
   override def apply(grupo: Grupo): Boolean = {
     grupo.heroes.exists(h => h match {
-      case Aventurero(_,_,Ladron(_)) => true
+      case Aventurero(_, _, Ladron(_)) => true
       case _ => false
     })
   }
@@ -130,6 +135,14 @@ case class Grupo(heroes: List[Aventurero]) {
   def eliminarElMasLento(): Unit = {
     val heroe: Aventurero = heroes.minBy(h => h.caracteristica.velocidad)
     heroe.danio(100)
+  }
+
+  def fuerza(): Double = heroes.foldRight(0.0)(_.fuerza() + _)
+
+  def subirNivel(): Unit = heroes.foreach(h => h.subirNivel())
+
+  def repartirDanio(danio: Double): Unit = {
+    perderSalud((danio / heroes.size).toInt)
   }
 }
 

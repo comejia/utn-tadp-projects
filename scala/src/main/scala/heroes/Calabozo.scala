@@ -45,16 +45,21 @@ case class Encuentro(heroePerdido: Aventurero) extends Situacion {
   override def apply(grupo: Grupo): Grupo = {
     val lider: Aventurero = grupo.lider()
     // TODO: ver como generar un nuevo grupo con el viejo y el heroe perdido
+    // Tener una lista parace ser un problema
     val grupoNuevo: Grupo = Grupo(grupo.heroes + heroePerdido)
-    if(heroePerdido.aplicarCriterio(grupo) && lider.aplicarCriterio(grupoNuevo)) {
+    if(heroePerdido.aplicaCriterio(grupo) && lider.aplicaCriterio(grupoNuevo)) {
       return grupoNuevo
     }
     peleaAMuerte(grupo, heroePerdido)
+    grupo
   }
 
-  // TODO: terminar
-  private def peleaAMuerte(grupo: Grupo, aventurero: Aventurero) = {
-
+  private def peleaAMuerte(grupo: Grupo, oponente: Aventurero): Unit = {
+    if(grupo.fuerza() > oponente.fuerza()) {
+      grupo.subirNivel()
+    } else {
+      grupo.repartirDanio(oponente.fuerza())
+    }
   }
 }
 
