@@ -1,9 +1,36 @@
 package calabozos
 
+import scala.util.{Success, Try}
+
 
 case class Calabozo(puertaPrincipal: Puerta,
-                    habitaciones: Set[Habitacion],
+                    var habitaciones: Set[Habitacion],
                     puertaFinal: Puerta) {
+
+  def recorrer(grupo: Grupo, entrada: Puerta = puertaPrincipal): Try[Grupo] = {
+    var grupoAfectado: Grupo = null
+
+    if (entrada == puertaFinal) {
+      return Success(grupo)
+    }
+
+    if (grupo.puedeAbrir(entrada)) {
+      grupoAfectado = grupo.agregarPuertaAbierta(entrada)
+      val habitacion = habitaciones.head
+      habitaciones = habitaciones.drop(0)
+      grupoAfectado = habitacion.aplicarEfecto(grupo)
+
+      if (grupoAfectado.muerto()) {
+        throw new RuntimeException("El grupo murio")
+      }
+
+      grupoAfectado = grupoAfectado.agregarPuertasAVisitar(Set(PuertaCerrada)) // TODO: ver si la habitacion tiene puertas
+
+      val siguientePuerta = grupoAfectado.elegirPuertaSiguiente(Set(PuertaCerrada))
+      recorrer(grupoAfectado, siguientePuerta)
+    } else throw new RuntimeException("No hay puertas para abrir")
+
+  }
 }
 
 abstract class Puerta(habitacion: Habitacion)
