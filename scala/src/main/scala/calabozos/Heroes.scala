@@ -1,15 +1,17 @@
 package calabozos
 
 case class Aventurero(caracteristica: Caracteristica,
-                      salud: Int = 100,
                       trabajo: Trabajo,
                       criterioSimpatia: CriterioSimpatia,
-                      criterioPuerta: CriterioPuerta) {
+                      criterioPuerta: CriterioPuerta,
+                      var salud: Int = 100) {
   def fuerza(): Double = trabajo.fuerza(caracteristica)
 
   def velocidad(): Int = caracteristica.velocidad
 
   def nivel(): Int = caracteristica.nivel
+
+  def habilidad(): Int = trabajo.habilidad(caracteristica)
 
   def muerto(): Boolean = salud <= 0
 
@@ -33,7 +35,7 @@ trait Trabajo {
 
   def abrir(puerta: Puerta, cofre: Set[Item], base: Caracteristica): Boolean = {
     puerta match {
-      case PuertaCerrada if cofre.contains(Llave) => true
+      case PuertaCerrada(_) if cofre.contains(Llave) => true
       case _ => abrirParticular(puerta, cofre, base)
     }
   }
@@ -51,23 +53,23 @@ case class Ladron(habilidadMano: Int) extends Trabajo {
   override def abrirParticular(puerta: Puerta, cofre: Set[Item], base: Caracteristica): Boolean = {
     puerta match {
       // TODO: Las ganzuas son para ladrones o cualquier heroe?
-      case PuertaCerrada if habilidadMano >= 10 || cofre.contains(Ganzuas) => true
-      case PuertaEscondida if habilidadMano >= 6 => true
+      case PuertaCerrada(_) if habilidadMano >= 10 || cofre.contains(Ganzuas) => true
+      case PuertaEscondida(_) if habilidadMano >= 6 => true
       case _ => habilidadMano >= 20
     }
   }
 }
 
-case class Mago(hechizos: Set[Aprendizaje]) extends Trabajo {
+case class Mago(hechizos: Set[(Hechizo, Int)]) extends Trabajo {
   def puedeUsarHechizo(base: Caracteristica, hechizo: Hechizo): Boolean = {
-    hechizos.exists(h => h.hechizo == hechizo && base.nivel >= h.nivelAprendizaje)
+    hechizos.exists(h => h._1 == hechizo && base.nivel >= h._2)
   }
 
   override def abrirParticular(puerta: Puerta, cofre: Set[Item], base: Caracteristica): Boolean = {
     puerta match {
-      case PuertaEscondida if puedeUsarHechizo(base, Vislumbrar) => true
+      case PuertaEscondida(_) if puedeUsarHechizo(base, Vislumbrar) => true
       // TODO: solo conoce el hechizo o tambien lo tiene que poder usar (osea alcanzar nivel)?
-      case PuertaEncantada(h) if puedeUsarHechizo(base, h) => true
+      case PuertaEncantada(h, _) if puedeUsarHechizo(base, h) => true
       case _ => false
     }
   }

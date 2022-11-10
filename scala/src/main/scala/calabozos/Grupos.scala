@@ -20,7 +20,7 @@ case class Grupo(heroes: List[Aventurero],
 //      puertasAbiertas = puertasAbiertas.+(puerta)
 //    }
     //estadoApertura
-    heroes.exists(h => h.abre(puerta, cofreComun))
+    aventurerosVivos().exists(h => h.abre(puerta, cofreComun))
   }
 
   def agregarItem(item: Item): Grupo = copy(cofreComun = cofreComun.+(item))

@@ -6,17 +6,16 @@ case class Calabozo(puertaPrincipal: Puerta,
                     puertaFinal: Puerta) {
 }
 
-trait Puerta
+abstract class Puerta(habitacion: Habitacion)
 
-case object PuertaCerrada extends Puerta
+case class PuertaCerrada(habitacionSiguiente: Habitacion) extends Puerta(habitacion = habitacionSiguiente)
 
-case object PuertaEscondida extends Puerta
+case class PuertaEscondida(habitacionSiguiente: Habitacion) extends Puerta(habitacion = habitacionSiguiente)
 
-case class PuertaEncantada(hechizo: Hechizo) extends Puerta
+case class PuertaEncantada(hechizo: Hechizo, habitacionSiguiente: Habitacion) extends Puerta(habitacion = habitacionSiguiente)
 
 
 case class Habitacion(situacion: Situacion) {
-
   def aplicarEfecto(grupo: Grupo): Grupo = situacion(grupo)
 }
 

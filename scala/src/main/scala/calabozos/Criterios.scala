@@ -8,12 +8,7 @@ case object Introvertido extends CriterioSimpatia {
 }
 
 case object Bigote extends CriterioSimpatia {
-  override def apply(grupo: Grupo): Boolean = {
-    grupo.heroes.exists(h => h match {
-      case Aventurero(_, _, Ladron(_), _, _) => true
-      case _ => false
-    })
-  }
+  override def apply(grupo: Grupo): Boolean = !grupo.heroes.map(h => h.trabajo).contains(Ladron(_))
 }
 
 case class Interesado(preferencia: Item) extends CriterioSimpatia {
