@@ -20,7 +20,6 @@ case object Loquito extends CriterioSimpatia {
 }
 
 
-
 // TODO: ver como implementar y donde?
 trait CriterioPuerta extends (Grupo => Puerta)
 
@@ -29,7 +28,7 @@ case object Heroico extends CriterioPuerta {
 }
 
 case object Ordenado extends CriterioPuerta {
-  override def apply(grupo: Grupo): Puerta = ???
+  override def apply(grupo: Grupo): Puerta = grupo.puertasAVisitar.last
 }
 
 case object Vidente extends CriterioPuerta {
@@ -39,6 +38,7 @@ case object Vidente extends CriterioPuerta {
 
   // TODO: como aplicar puerta sino sabemos la habitacion siguiente?
   private def puntaje(grupo: Grupo, puerta: Puerta): Int = {
-    grupo.heroesVivos() * 10 - grupo.heroesMuertos() * 5 + grupo.tamanioGrupo() + grupo.nivelMasAlto()
+    val grupoAfectado = puerta.habitacion.aplicarEfecto(grupo)
+    grupoAfectado.heroesVivos() * 10 - grupo.heroesMuertos() * 5 + grupo.tamanioGrupo() + grupo.nivelMasAlto()
   }
 }

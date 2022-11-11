@@ -4,45 +4,34 @@ import scala.util.{Success, Try}
 
 
 case class Calabozo(puertaPrincipal: Puerta,
-                    var habitaciones: Set[Habitacion],
-                    puertaFinal: Puerta) {
+                    //var habitaciones: Set[Habitacion],
+                    //puertaFinal: Puerta
+                   ) {
 
   def recorrer(grupo: Grupo, entrada: Puerta = puertaPrincipal): Try[Grupo] = {
-    var grupoAfectado: Grupo = null
+    if (entrada._salida) return Success(grupo)
 
-    if (entrada == puertaFinal) {
-      return Success(grupo)
-    }
+    val grupoRecorriendo: Try[Grupo] = grupo.abrir(entrada)
+      .flatMap(_.enfrentarSituacion(entrada.habitacion))
+      .flatMap(_.agregarPuertasAVisitar(entrada.habitacion.salidas))
 
-    if (grupo.puedeAbrir(entrada)) {
-      grupoAfectado = grupo.agregarPuertaAbierta(entrada)
-      val habitacion = habitaciones.head
-      habitaciones = habitaciones.drop(0)
-      grupoAfectado = habitacion.aplicarEfecto(grupo)
+    val siguiente = grupoRecorriendo.flatMap(_.elegirPuertaSiguiente(entrada.habitacion.salidas))
 
-      if (grupoAfectado.muerto()) {
-        throw new RuntimeException("El grupo murio")
-      }
-
-      grupoAfectado = grupoAfectado.agregarPuertasAVisitar(Set(PuertaCerrada)) // TODO: ver si la habitacion tiene puertas
-
-      val siguientePuerta = grupoAfectado.elegirPuertaSiguiente(Set(PuertaCerrada))
-      recorrer(grupoAfectado, siguientePuerta)
-    } else throw new RuntimeException("No hay puertas para abrir")
-
+    recorrer(grupoRecorriendo.get, siguiente.get)
   }
+
 }
 
-abstract class Puerta(habitacion: Habitacion)
+abstract class Puerta(val habitacion: Habitacion, var _salida: Boolean = false)
 
-case class PuertaCerrada(habitacionSiguiente: Habitacion) extends Puerta(habitacion = habitacionSiguiente)
+case class PuertaCerrada(habitacionSiguiente: Habitacion, salida: Boolean = false) extends Puerta(habitacion = habitacionSiguiente, _salida = salida)
 
-case class PuertaEscondida(habitacionSiguiente: Habitacion) extends Puerta(habitacion = habitacionSiguiente)
+case class PuertaEscondida(habitacionSiguiente: Habitacion, salida: Boolean = false) extends Puerta(habitacion = habitacionSiguiente, _salida = salida)
 
-case class PuertaEncantada(hechizo: Hechizo, habitacionSiguiente: Habitacion) extends Puerta(habitacion = habitacionSiguiente)
+case class PuertaEncantada(hechizo: Hechizo, habitacionSiguiente: Habitacion, salida: Boolean = false) extends Puerta(habitacion = habitacionSiguiente, _salida = salida)
 
 
-case class Habitacion(situacion: Situacion) {
+case class Habitacion(situacion: Situacion, salidas: Set[Puerta] = Set()) {
   def aplicarEfecto(grupo: Grupo): Grupo = situacion(grupo)
 }
 
@@ -68,14 +57,14 @@ case class Encuentro(heroePerdido: Aventurero) extends Situacion {
   override def apply(grupo: Grupo): Grupo = {
     val lider: Aventurero = grupo.lider()
     val posibleGrupo: Grupo = grupo.copy(heroes = grupo.heroes :+ heroePerdido)
-    if(heroePerdido.leAgrada(grupo) && lider.leAgrada(posibleGrupo)) {
+    if (heroePerdido.leAgrada(grupo) && lider.leAgrada(posibleGrupo)) {
       return posibleGrupo
     }
     peleaAMuerte(grupo, heroePerdido)
   }
 
   private def peleaAMuerte(grupo: Grupo, oponente: Aventurero): Grupo = {
-    if(grupo.fuerza() > oponente.fuerza()) {
+    if (grupo.fuerza() > oponente.fuerza()) {
       grupo.subirNivel()
     } else {
       grupo.perderSalud((oponente.fuerza() / grupo.tamanioGrupo()).toInt)

@@ -23,7 +23,7 @@ case class Aventurero(caracteristica: Caracteristica,
 
   def subirNivel(): Aventurero = copy(caracteristica = caracteristica.copy(nivel = caracteristica.nivel + 1))
 
-  def elegirPuerta(puertas: Set[Puerta]): Puerta = ???
+  def elegirPuerta(grupo: Grupo): Puerta = criterioPuerta(grupo)
 }
 
 case class Caracteristica(fuerza: Int, velocidad: Int, nivel: Int)

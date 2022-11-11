@@ -1,5 +1,7 @@
 package calabozos
 
+import scala.util.Try
+
 
 case class Grupo(heroes: List[Aventurero],
                  cofreComun: Set[Item] = Set(),
@@ -16,9 +18,9 @@ case class Grupo(heroes: List[Aventurero],
 
   def puedeAbrir(puerta: Puerta): Boolean = {
     //val estadoApertura = heroes.exists(h => h.abre(puerta, cofreComun))
-//    if (estadoApertura) {
-//      puertasAbiertas = puertasAbiertas.+(puerta)
-//    }
+    //    if (estadoApertura) {
+    //      puertasAbiertas = puertasAbiertas.+(puerta)
+    //    }
     //estadoApertura
     aventurerosVivos().exists(h => h.abre(puerta, cofreComun))
   }
@@ -34,10 +36,10 @@ case class Grupo(heroes: List[Aventurero],
 
   // TODO: no estoy seguro de esto
   def eliminarElMasLento(): Grupo = {
-    val heroeLento: Aventurero = heroes.minBy(h => h.velocidad())
+    val heroeLento: Aventurero = aventurerosVivos().minBy(h => h.velocidad())
     //heroeLento = heroeLento.danio(100)
     copy(heroes = heroes.map(h => {
-      if(h == heroeLento) heroeLento.danio(100)
+      if (h == heroeLento) heroeLento.danio(100)
       else h.danio(0)
     }))
   }
@@ -53,24 +55,27 @@ case class Grupo(heroes: List[Aventurero],
 
   def tieneItem(item: Item): Boolean = cofreComun.contains(item)
 
-  def agregarPuertaAbierta(puerta: Puerta) : Grupo = copy(puertasAbiertas = puertasAbiertas.+(puerta))
+  def agregarPuertaAbierta(puerta: Puerta): Grupo = {
+    copy(puertasAbiertas = puertasAbiertas.+(puerta), puertasAVisitar = puertasAVisitar.-(puerta))
+  }
 
   def muerto(): Boolean = heroes.forall(h => h.muerto())
 
-  def agregarPuertasAVisitar(puertas: Set[Puerta]): Grupo = {
-    copy(puertasAbiertas = puertasAVisitar ++ puertas)
+  def agregarPuertasAVisitar(puertas: Set[Puerta]): Try[Grupo] = Try {
+    copy(puertasAVisitar = puertas ++ puertasAVisitar)
   }
 
   // TODO: es responsabilidad del grupo?? (sin terminar)
-  def elegirPuertaSiguiente(puertasDeHabitacion: Set[Puerta]): Puerta = {
-    // TODO: terminar de implementar
+  def elegirPuertaSiguiente(puertasDeHabitacion: Set[Puerta]): Try[Puerta] = Try {
     val puertasPosibles = puertasAVisitar.filter(p => puedeAbrir(p))
-    //lider().elegirPuerta(puertasAVisitar.filter(p => puedeAbrir(p)))
-    lider().criterioPuerta match {
-      case Heroico => puertasDeHabitacion.head
-      case Ordenado => if (puertasPosibles.nonEmpty) puertasPosibles.head else puertasDeHabitacion.head
-      //case Vidente =>
-    }
+    if (puertasPosibles.isEmpty) throw NoHayPuertasParaAbrirException(this)
+    lider().elegirPuerta(copy(puertasAVisitar = puertasPosibles))
+    //lider().criterioPuerta match {
+    //case Heroico => puertasDeHabitacion.head
+    //case Ordenado => if (puertasPosibles.nonEmpty) puertasPosibles.head else puertasDeHabitacion.head
+    //case Ordenado => puertasAVisitar.last
+    //case Vidente =>
+    //}
   }
 
   def heroesVivos(): Int = heroes.count(h => !h.muerto())
@@ -78,6 +83,17 @@ case class Grupo(heroes: List[Aventurero],
   def heroesMuertos(): Int = heroes.count(h => h.muerto())
 
   def nivelMasAlto(): Int = heroes.maxBy(h => h.nivel()).nivel()
+
+  def abrir(puerta: Puerta): Try[Grupo] = Try {
+    if (!puedeAbrir(puerta)) throw NoSePuedeAbrirPuertaException(this)
+    else agregarPuertaAbierta(puerta)
+  }
+
+  def enfrentarSituacion(habitacion: Habitacion): Try[Grupo] = Try {
+    val grupoAfectado = habitacion.aplicarEfecto(this)
+    if (grupoAfectado.muerto()) throw GrupoMuertoException(this)
+    else grupoAfectado
+  }
 }
 
 
