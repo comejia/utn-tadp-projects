@@ -21,14 +21,14 @@ case class Calabozo(puertaPrincipal: Puerta) {
 
 abstract class Puerta(val habitacion: Habitacion, var _salida: Boolean = false)
 
-case class PuertaCerrada(habitacionSiguiente: Habitacion, val salida: Boolean = false) extends Puerta(habitacion = habitacionSiguiente, _salida = salida)
+case class PuertaCerrada(habitacionSiguiente: Habitacion, salida: Boolean = false) extends Puerta(habitacion = habitacionSiguiente, _salida = salida)
 
 case class PuertaEscondida(habitacionSiguiente: Habitacion, salida: Boolean = false) extends Puerta(habitacion = habitacionSiguiente, _salida = salida)
 
 case class PuertaEncantada(hechizo: Hechizo, habitacionSiguiente: Habitacion, salida: Boolean = false) extends Puerta(habitacion = habitacionSiguiente, _salida = salida)
 
 
-case class Habitacion(situacion: Situacion, salidas: Set[Puerta] = Set()) {
+case class Habitacion(situacion: Situacion, salidas: List[Puerta] = List()) {
   def aplicarEfecto(grupo: Grupo): Grupo = situacion(grupo)
 }
 

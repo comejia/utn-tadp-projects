@@ -23,18 +23,6 @@ object analizador {
         case (Failure(_), Failure(_)) => throw new NingunGrupoAtravesoElCalabozo
       }
     })
-
-    //    grupos.reduce((g1, g2) => {
-    //      val a = calabozo.recorrer(g1)
-    //      val b = calabozo.recorrer(g2)
-    //      if (a.get.puntaje() > b.get.puntaje()) g1 else g2
-    //    })
-
-    //    grupos.fold(grupos.head)((g1, g2) => {
-    //      val a = calabozo.recorrer(g1)
-    //      val b = calabozo.recorrer(g2)
-    //      if (a.get.puntaje() > b.get.puntaje()) g1 else g2
-    //    })
   }
 
   def nivelesNecesarios(grupo: Grupo, calabozo: Calabozo, iteracion: Int = 0): Try[Int] = Try {

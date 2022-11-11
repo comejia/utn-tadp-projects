@@ -5,7 +5,7 @@ import scala.util.Try
 case class Grupo(heroes: List[Aventurero],
                  cofreComun: Set[Item] = Set(),
                  puertasAbiertas: Set[Puerta] = Set(),
-                 puertasAVisitar: Set[Puerta] = Set()) {
+                 puertasAVisitar: List[Puerta] = List()) {
 
   def aventurerosVivos(): List[Aventurero] = heroes.filter(h => !h.muerto())
 
@@ -34,15 +34,15 @@ case class Grupo(heroes: List[Aventurero],
   def tieneItem(item: Item): Boolean = cofreComun.contains(item)
 
   def agregarPuertaAbierta(puerta: Puerta): Grupo =
-    copy(puertasAbiertas = puertasAbiertas.+(puerta), puertasAVisitar = puertasAVisitar.-(puerta))
+    copy(puertasAbiertas = puertasAbiertas.+(puerta), puertasAVisitar = puertasAVisitar.dropWhile(p => p == puerta))
 
   def muerto(): Boolean = heroes.forall(h => h.muerto())
 
-  def agregarPuertasAVisitar(puertas: Set[Puerta]): Try[Grupo] = Try {
+  def agregarPuertasAVisitar(puertas: List[Puerta]): Try[Grupo] = Try {
     copy(puertasAVisitar = puertas ++ puertasAVisitar)
   }
 
-  def elegirPuertaSiguiente(puertasDeHabitacion: Set[Puerta]): Try[Puerta] = Try {
+  def elegirPuertaSiguiente(puertasDeHabitacion: List[Puerta]): Try[Puerta] = Try {
     val puertasPosibles = puertasAVisitar.filter(p => puedeAbrir(p))
     if (puertasPosibles.isEmpty) throw NoHayPuertasParaAbrirException(this)
     lider().elegirPuerta(copy(puertasAVisitar = puertasPosibles))
