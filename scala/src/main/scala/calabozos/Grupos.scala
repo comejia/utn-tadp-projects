@@ -2,7 +2,6 @@ package calabozos
 
 import scala.util.Try
 
-
 case class Grupo(heroes: List[Aventurero],
                  cofreComun: Set[Item] = Set(),
                  puertasAbiertas: Set[Puerta] = Set(),
@@ -94,6 +93,8 @@ case class Grupo(heroes: List[Aventurero],
     if (grupoAfectado.muerto()) throw GrupoMuertoException(this)
     else grupoAfectado
   }
+
+  def puntaje(): Int = heroesVivos() * 10 - heroesMuertos() * 5 + tamanioGrupo() + nivelMasAlto()
 }
 
 

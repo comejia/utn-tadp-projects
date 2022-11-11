@@ -1,6 +1,5 @@
 package calabozos
 
-
 trait CriterioSimpatia extends (Grupo => Boolean)
 
 case object Introvertido extends CriterioSimpatia {
@@ -33,12 +32,14 @@ case object Ordenado extends CriterioPuerta {
 
 case object Vidente extends CriterioPuerta {
   override def apply(grupo: Grupo): Puerta = {
-    grupo.puertasAVisitar.maxBy(puerta => puntaje(grupo, puerta))
+    grupo.puertasAVisitar.maxBy(puerta => {
+      puerta.habitacion.aplicarEfecto(grupo).puntaje()
+      //puntaje(grupo, puerta)
+    })
   }
 
-  // TODO: como aplicar puerta sino sabemos la habitacion siguiente?
-  private def puntaje(grupo: Grupo, puerta: Puerta): Int = {
-    val grupoAfectado = puerta.habitacion.aplicarEfecto(grupo)
-    grupoAfectado.heroesVivos() * 10 - grupo.heroesMuertos() * 5 + grupo.tamanioGrupo() + grupo.nivelMasAlto()
-  }
+  //  private def puntaje(grupo: Grupo, puerta: Puerta): Int = {
+  //    val grupoAfectado = puerta.habitacion.aplicarEfecto(grupo)
+  //    grupoAfectado.heroesVivos() * 10 - grupo.heroesMuertos() * 5 + grupo.tamanioGrupo() + grupo.nivelMasAlto()
+  //  }
 }

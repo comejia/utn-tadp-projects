@@ -1,8 +1,6 @@
-import calabozos.{Aventurero, Calabozo, Caracteristica, Encuentro, Ganzuas, Grupo, GrupoMuertoException, Guerrero, Habitacion, Heroico, Introvertido, Ladron, Loquito, Mago, MuchosDardos, NoHayPuertasParaAbrirException, NoPasaNada, NoSePuedeAbrirPuertaException, Puerta, PuertaCerrada, PuertaEncantada, PuertaEscondida, TrampaDeLeones, Vislumbrar}
+import calabozos._
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers._
-
-import scala.util.{Failure, Success}
 
 class CalabozosSpec extends AnyFreeSpec {
 
