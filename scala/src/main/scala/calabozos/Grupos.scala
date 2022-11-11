@@ -50,7 +50,7 @@ case class Grupo(heroes: List[Aventurero],
     copy(heroes = heroes.map(h => h.subirNivel()))
   }
 
-  def tamanioGrupo(): Int = heroes.size
+  def tamanioGrupo(): Int = aventurerosVivos().size
 
   def tieneItem(item: Item): Boolean = cofreComun.contains(item)
 
