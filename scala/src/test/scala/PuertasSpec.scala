@@ -36,7 +36,7 @@ class PuertasSpec extends AnyFreeSpec {
 
     "una Puerta Cerrada no se abre si el grupo no tiene item Llave ni un ladron con Ganzuas" in {
       val guerrero = Aventurero(Caracteristica(50, 10, 10), Guerrero, Introvertido, Heroico)
-      val ladron = Aventurero(Caracteristica(50, 10, nivel = 10), Ladron(5), Introvertido, Heroico)
+      val ladron = Aventurero(Caracteristica(50, 10, nivel = 1), Ladron(5), Introvertido, Heroico)
       val grupo = Grupo(List(guerrero, ladron))
 
       val puertaCerrada = PuertaCerrada(Habitacion(NoPasaNada))
@@ -64,11 +64,10 @@ class PuertasSpec extends AnyFreeSpec {
       grupo.puedeAbrir(puertaEscondida) shouldBe true
     }
 
-
     "una Puerta Escondida no se abre si en el grupo no hay un mago que conoce el hechizo Vislumbrar ni un ladron habilidoso" in {
       val guerrero = Aventurero(Caracteristica(50, 10, 10), Guerrero, Introvertido, Heroico)
       val mago = Aventurero(Caracteristica(50, 10, nivel = 1), Mago(Set((Vislumbrar, 3))), Introvertido, Heroico)
-      val ladron = Aventurero(Caracteristica(50, 10, 5), Ladron(3), Introvertido, Heroico)
+      val ladron = Aventurero(Caracteristica(50, 10, 0), Ladron(3), Introvertido, Heroico)
       val grupo = Grupo(List(guerrero, ladron, mago))
 
       val puertaEscondida = PuertaEscondida(Habitacion(NoPasaNada))

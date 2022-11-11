@@ -6,8 +6,8 @@ class CalabozosSpec extends AnyFreeSpec {
 
   "Calabozos" - {
     val guerreroLento = Aventurero(Caracteristica(fuerza = 50, 1, 10), Guerrero, Introvertido, Heroico)
-    val ladronAbrePuertaCerrada = Aventurero(Caracteristica(50, 10, nivel = 10), Ladron(10), Introvertido, Heroico)
-    val ladronSinHabilidad = Aventurero(Caracteristica(50, 10, nivel = 10), Ladron(2), Introvertido, Heroico)
+    val ladronAbrePuertaCerrada = Aventurero(Caracteristica(50, 10, nivel = 1), Ladron(10), Introvertido, Heroico)
+    val ladronSinHabilidad = Aventurero(Caracteristica(50, 10, nivel = 2), Ladron(2), Introvertido, Heroico)
     val magoConoceVislumbrar = Aventurero(Caracteristica(50, 100, nivel = 10), Mago(Set((Vislumbrar, 3))), Introvertido, Heroico)
     val magoConoceVislumbrarYEsLento = Aventurero(Caracteristica(50, 2, nivel = 10), Mago(Set((Vislumbrar, 3))), Introvertido, Heroico)
     val muerto = Aventurero(Caracteristica(50, 10, nivel = 10), Ladron(60), Introvertido, Heroico, salud = 0)

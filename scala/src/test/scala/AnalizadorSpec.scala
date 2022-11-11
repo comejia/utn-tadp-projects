@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers._
 class AnalizadorSpec extends AnyFreeSpec {
   val guerreroLento: Aventurero = Aventurero(Caracteristica(fuerza = 50, 1, 10), Guerrero, Introvertido, Heroico)
   val ladronAbrePuertaCerrada: Aventurero = Aventurero(Caracteristica(50, 10, nivel = 10), Ladron(10), Introvertido, Heroico)
-  val ladronSinHabilidad: Aventurero = Aventurero(Caracteristica(50, 10, nivel = 10), Ladron(2), Introvertido, Heroico)
+  val ladronSinHabilidad: Aventurero = Aventurero(Caracteristica(50, 10, nivel = 3), Ladron(2), Introvertido, Heroico)
   val magoConoceVislumbrar: Aventurero = Aventurero(Caracteristica(50, 100, nivel = 10), Mago(Set((Vislumbrar, 3))), Introvertido, Heroico)
   val magoConoceVislumbrarYEsLento: Aventurero = Aventurero(Caracteristica(50, 2, nivel = 10), Mago(Set((Vislumbrar, 3))), Introvertido, Heroico)
 
