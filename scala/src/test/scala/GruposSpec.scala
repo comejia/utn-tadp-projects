@@ -1,4 +1,4 @@
-import calabozos.{Aventurero, Caracteristica, Grupo, Guerrero, Heroico, Introvertido, Ladron, Mago, Vislumbrar}
+import calabozos.{Aventurero, Caracteristica, Grupo, Guerrero, Heroico, Introvertido, Ladron}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers._
 

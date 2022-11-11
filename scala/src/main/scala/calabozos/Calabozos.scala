@@ -3,10 +3,7 @@ package calabozos
 import scala.util.{Success, Try}
 
 
-case class Calabozo(puertaPrincipal: Puerta,
-                    //var habitaciones: Set[Habitacion],
-                    //puertaFinal: Puerta
-                   ) {
+case class Calabozo(puertaPrincipal: Puerta) {
 
   def recorrer(grupo: Grupo, entrada: Puerta = puertaPrincipal): Try[Grupo] = {
     if (entrada._salida) return Success(grupo)

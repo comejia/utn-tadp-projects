@@ -7,36 +7,18 @@ case class Grupo(heroes: List[Aventurero],
                  puertasAbiertas: Set[Puerta] = Set(),
                  puertasAVisitar: Set[Puerta] = Set()) {
 
-  //var cofreComun: Set[Item] = Set()
-  //var puertasAbiertas: Set[Puerta] = Set()
-  //var puertasAVisitar: Set[Puerta] = Set()
-
   def aventurerosVivos(): List[Aventurero] = heroes.filter(h => !h.muerto())
 
   def lider(): Aventurero = aventurerosVivos().head
 
-  def puedeAbrir(puerta: Puerta): Boolean = {
-    //val estadoApertura = heroes.exists(h => h.abre(puerta, cofreComun))
-    //    if (estadoApertura) {
-    //      puertasAbiertas = puertasAbiertas.+(puerta)
-    //    }
-    //estadoApertura
-    aventurerosVivos().exists(h => h.abre(puerta, cofreComun))
-  }
+  def puedeAbrir(puerta: Puerta): Boolean = aventurerosVivos().exists(h => h.abre(puerta, cofreComun))
 
   def agregarItem(item: Item): Grupo = copy(cofreComun = cofreComun.+(item))
 
-  def perderSalud(danio: Int): Grupo = {
-    //val grupoDaniado = copy()
-    //grupoDaniado.heroes.map(h => h.danio(danio))
-    //grupoDaniado
-    copy(heroes = heroes.map(h => h.danio(danio)))
-  }
+  def perderSalud(danio: Int): Grupo = copy(heroes = heroes.map(h => h.danio(danio)))
 
-  // TODO: no estoy seguro de esto
   def eliminarElMasLento(): Grupo = {
     val heroeLento: Aventurero = aventurerosVivos().minBy(h => h.velocidad())
-    //heroeLento = heroeLento.danio(100)
     copy(heroes = heroes.map(h => {
       if (h == heroeLento) heroeLento.danio(100)
       else h.danio(0)
@@ -45,18 +27,14 @@ case class Grupo(heroes: List[Aventurero],
 
   def fuerza(): Double = heroes.foldRight(0.0)(_.fuerza() + _)
 
-  def subirNivel(): Grupo = {
-    //heroes.foreach(h => h.subirNivel())
-    copy(heroes = heroes.map(h => h.subirNivel()))
-  }
+  def subirNivel(): Grupo = copy(heroes = heroes.map(h => h.subirNivel()))
 
   def tamanioGrupo(): Int = aventurerosVivos().size
 
   def tieneItem(item: Item): Boolean = cofreComun.contains(item)
 
-  def agregarPuertaAbierta(puerta: Puerta): Grupo = {
+  def agregarPuertaAbierta(puerta: Puerta): Grupo =
     copy(puertasAbiertas = puertasAbiertas.+(puerta), puertasAVisitar = puertasAVisitar.-(puerta))
-  }
 
   def muerto(): Boolean = heroes.forall(h => h.muerto())
 
@@ -64,17 +42,10 @@ case class Grupo(heroes: List[Aventurero],
     copy(puertasAVisitar = puertas ++ puertasAVisitar)
   }
 
-  // TODO: es responsabilidad del grupo?? (sin terminar)
   def elegirPuertaSiguiente(puertasDeHabitacion: Set[Puerta]): Try[Puerta] = Try {
     val puertasPosibles = puertasAVisitar.filter(p => puedeAbrir(p))
     if (puertasPosibles.isEmpty) throw NoHayPuertasParaAbrirException(this)
     lider().elegirPuerta(copy(puertasAVisitar = puertasPosibles))
-    //lider().criterioPuerta match {
-    //case Heroico => puertasDeHabitacion.head
-    //case Ordenado => if (puertasPosibles.nonEmpty) puertasPosibles.head else puertasDeHabitacion.head
-    //case Ordenado => puertasAVisitar.last
-    //case Vidente =>
-    //}
   }
 
   def heroesVivos(): Int = heroes.count(h => !h.muerto())
@@ -103,6 +74,3 @@ sealed trait Item
 case object Llave extends Item
 
 case object Ganzuas extends Item
-
-// TODO: ver si existe Tesoro u otra cosa que no sea un Item
-//case object Tesoro extends Objeto

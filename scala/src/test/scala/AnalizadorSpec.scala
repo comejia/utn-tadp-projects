@@ -1,6 +1,5 @@
 import calabozos._
 import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.should.Matchers._
 
 class AnalizadorSpec extends AnyFreeSpec {
   val guerreroLento: Aventurero = Aventurero(Caracteristica(fuerza = 50, 1, 10), Guerrero, Introvertido, Heroico)

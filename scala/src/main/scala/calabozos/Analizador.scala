@@ -15,18 +15,6 @@ object analizador {
     //    }
     //    }
 
-//    grupos.reduce((g1, g2) => {
-//      val a = calabozo.recorrer(g1)
-//      val b = calabozo.recorrer(g2)
-//      if (a.get.puntaje() > b.get.puntaje()) g1 else g2
-//    })
-
-    //    grupos.fold(grupos.head)((g1, g2) => {
-    //      val a = calabozo.recorrer(g1)
-    //      val b = calabozo.recorrer(g2)
-    //      if (a.get.puntaje() > b.get.puntaje()) g1 else g2
-    //    })
-
     grupos.reduce((g1, g2) => {
       (Try(calabozo.recorrer(g1)), Try(calabozo.recorrer(g2))) match {
         case (Success(g_1), Success(g_2)) => if (g_1.get.puntaje() > g_2.get.puntaje()) g_1.get else g_2.get
@@ -35,12 +23,24 @@ object analizador {
         case (Failure(_), Failure(_)) => throw new NingunGrupoAtravesoElCalabozo
       }
     })
+
+    //    grupos.reduce((g1, g2) => {
+    //      val a = calabozo.recorrer(g1)
+    //      val b = calabozo.recorrer(g2)
+    //      if (a.get.puntaje() > b.get.puntaje()) g1 else g2
+    //    })
+
+    //    grupos.fold(grupos.head)((g1, g2) => {
+    //      val a = calabozo.recorrer(g1)
+    //      val b = calabozo.recorrer(g2)
+    //      if (a.get.puntaje() > b.get.puntaje()) g1 else g2
+    //    })
   }
 
   def nivelesNecesarios(grupo: Grupo, calabozo: Calabozo, iteracion: Int = 0): Try[Int] = Try {
     calabozo.recorrer(grupo)
     return Try(iteracion)
-  }.recover {case _ =>
+  }.recover { case _ =>
     return nivelesNecesarios(grupo.subirNivel(), calabozo, iteracion + 1)
   }
 }

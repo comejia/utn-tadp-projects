@@ -1,4 +1,4 @@
-import calabozos.{Aventurero, Caracteristica, Ganzuas, Grupo, Guerrero, Habitacion, Heroico, Introvertido, Ladron, Llave, Mago, NoPasaNada, PuertaCerrada, PuertaEncantada, PuertaEscondida, Vislumbrar}
+import calabozos._
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers._
 
