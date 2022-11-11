@@ -35,7 +35,7 @@ trait Trabajo {
 
   def abrir(puerta: Puerta, cofre: Set[Item], base: Caracteristica): Boolean = {
     puerta match {
-      case PuertaCerrada(_) if cofre.contains(Llave) => true
+      case PuertaCerrada(_,_) if cofre.contains(Llave) => true
       case _ => abrirParticular(puerta, cofre, base)
     }
   }
@@ -53,9 +53,9 @@ case class Ladron(habilidadMano: Int) extends Trabajo {
   override def abrirParticular(puerta: Puerta, cofre: Set[Item], base: Caracteristica): Boolean = {
     puerta match {
       // TODO: Las ganzuas son para ladrones o cualquier heroe?
-      case PuertaCerrada(_) if habilidadMano >= 10 || cofre.contains(Ganzuas) => true
-      case PuertaEscondida(_) if habilidadMano >= 6 => true
-      case _ => habilidadMano >= 20
+      case PuertaCerrada(_,_) if habilidad(base) >= 10 || cofre.contains(Ganzuas) => true
+      case PuertaEscondida(_,_) if habilidad(base) >= 6 => true
+      case _ => habilidad(base) >= 20
     }
   }
 }
@@ -67,9 +67,9 @@ case class Mago(hechizos: Set[(Hechizo, Int)]) extends Trabajo {
 
   override def abrirParticular(puerta: Puerta, cofre: Set[Item], base: Caracteristica): Boolean = {
     puerta match {
-      case PuertaEscondida(_) if puedeUsarHechizo(base, Vislumbrar) => true
+      case PuertaEscondida(_,_) if puedeUsarHechizo(base, Vislumbrar) => true
       // TODO: solo conoce el hechizo o tambien lo tiene que poder usar (osea alcanzar nivel)?
-      case PuertaEncantada(h, _) if puedeUsarHechizo(base, h) => true
+      case PuertaEncantada(h, _,_) if puedeUsarHechizo(base, h) => true
       case _ => false
     }
   }

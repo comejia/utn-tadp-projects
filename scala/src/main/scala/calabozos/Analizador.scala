@@ -37,5 +37,10 @@ object analizador {
     })
   }
 
-  def nivelesNecesarios(grupo: Grupo, calabozo: Calabozo): Int = ???
+  def nivelesNecesarios(grupo: Grupo, calabozo: Calabozo, iteracion: Int = 0): Try[Int] = Try {
+    calabozo.recorrer(grupo)
+    return Try(iteracion)
+  }.recover {case _ =>
+    return nivelesNecesarios(grupo.subirNivel(), calabozo, iteracion + 1)
+  }
 }
