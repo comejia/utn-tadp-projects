@@ -42,7 +42,7 @@ case class Grupo(heroes: List[Aventurero],
     copy(puertasAVisitar = puertas ++ puertasAVisitar)
   }
 
-  def elegirPuertaSiguiente(puertasDeHabitacion: List[Puerta]): Try[Puerta] = Try {
+  def elegirPuertaSiguiente(): Try[Puerta] = Try {
     val puertasPosibles = puertasAVisitar.filter(p => puedeAbrir(p))
     if (puertasPosibles.isEmpty) throw NoHayPuertasParaAbrirException(this)
     lider().elegirPuerta(copy(puertasAVisitar = puertasPosibles))
