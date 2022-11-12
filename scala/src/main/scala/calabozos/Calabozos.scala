@@ -5,18 +5,6 @@ import scala.util.{Success, Try}
 
 case class Calabozo(puertaPrincipal: Puerta) {
 
-//  def recorrer(grupo: Grupo, entrada: Puerta = puertaPrincipal): Try[Grupo] = {
-//    if (entrada._salida) return Success(grupo)
-//
-//    val grupoRecorriendo: Try[Grupo] = grupo.abrir(entrada)
-//      .flatMap(_.enfrentarSituacion(entrada.habitacion))
-//      .flatMap(_.agregarPuertasAVisitar(entrada.habitacion.salidas))
-//
-//    val siguiente = grupoRecorriendo.flatMap(_.elegirPuertaSiguiente(entrada.habitacion.salidas))
-//
-//    recorrer(grupoRecorriendo.get, siguiente.get)
-//  }
-
   def recorrer(grupo: Grupo, entrada: Puerta = puertaPrincipal): Try[Grupo] = {
     if (entrada._salida) return Success(grupo)
 
@@ -24,7 +12,7 @@ case class Calabozo(puertaPrincipal: Puerta) {
       grupoAbrio <- grupo.abrir(entrada)
       grupoEnfrentoSituacion <- grupoAbrio.enfrentarSituacion(entrada.habitacion)
       grupoAgregoPuertas <- grupoEnfrentoSituacion.agregarPuertasAVisitar(entrada.habitacion.salidas)
-      puerta <- grupoAgregoPuertas.elegirPuertaSiguiente(entrada.habitacion.salidas)
+      puerta <- grupoAgregoPuertas.elegirPuertaSiguiente()
       grupoRecorrio <- recorrer(grupoAgregoPuertas, puerta)
     } yield grupoRecorrio
   }
