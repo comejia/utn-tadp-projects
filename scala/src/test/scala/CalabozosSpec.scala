@@ -38,7 +38,7 @@ class CalabozosSpec extends AnyFreeSpec {
 
       // TODO: como validar por isFailure??
       assertThrows[NoSePuedeAbrirPuertaException] {
-        calabozo.recorrer(grupo)
+        calabozo.recorrer(grupo).get
       }
     }
 
@@ -57,7 +57,7 @@ class CalabozosSpec extends AnyFreeSpec {
       val calabozo = Calabozo(puertaPrincipal = puerta)
 
       assertThrows[GrupoMuertoException] {
-        calabozo.recorrer(grupo)
+        calabozo.recorrer(grupo).get
       }
     }
 
@@ -75,7 +75,7 @@ class CalabozosSpec extends AnyFreeSpec {
       val calabozo = Calabozo(puertaPrincipal = puerta)
 
       assertThrows[NoHayPuertasParaAbrirException] {
-        calabozo.recorrer(grupo)
+        calabozo.recorrer(grupo).get
       }
     }
 
