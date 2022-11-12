@@ -20,11 +20,11 @@ class AnalizadorSpec extends AnyFreeSpec {
 
       val puerta: Puerta = PuertaCerrada(
         Habitacion(NoPasaNada,
-          Set(
+          List(
             PuertaCerrada(Habitacion(NoPasaNada)),
             PuertaCerrada(Habitacion(TrampaDeLeones)),
             PuertaEncantada(Vislumbrar,
-              Habitacion(TrampaDeLeones, Set(PuertaEscondida(Habitacion(Encuentro(perdidoDebil)))))
+              Habitacion(TrampaDeLeones, List(PuertaEscondida(Habitacion(Encuentro(perdidoDebil)))))
             ),
             PuertaEncantada(Vislumbrar, Habitacion(MuchosDardos())),
             PuertaEncantada(Vislumbrar, Habitacion(MuchosDardos()), salida = true)
@@ -36,7 +36,7 @@ class AnalizadorSpec extends AnyFreeSpec {
       val mejorGrupo = analizador.mejorGrupo(List(grupoNoPasaNada, grupoPasaAlgunosObstaculos, grupoPasaTodo), calabozo)
 
       assert(mejorGrupo.isSuccess)
-      assert(mejorGrupo.get.puntaje() == 28)
+      assert(mejorGrupo.get.puntaje() == 12)
     }
 
     "si ningun grupo recorre el calabozo, se lanza excepcion" in {
@@ -46,11 +46,11 @@ class AnalizadorSpec extends AnyFreeSpec {
 
       val puerta: Puerta = PuertaCerrada(
         Habitacion(NoPasaNada,
-          Set(
+          List(
             PuertaCerrada(Habitacion(NoPasaNada)),
             PuertaCerrada(Habitacion(TrampaDeLeones)),
             PuertaEncantada(Vislumbrar,
-              Habitacion(TrampaDeLeones, Set(PuertaEscondida(Habitacion(Encuentro(perdidoDebil)))))
+              Habitacion(TrampaDeLeones, List(PuertaEscondida(Habitacion(Encuentro(perdidoDebil)))))
             ),
             PuertaEncantada(Vislumbrar, Habitacion(MuchosDardos())),
             PuertaEncantada(Vislumbrar, Habitacion(MuchosDardos()), salida = true)
@@ -67,17 +67,17 @@ class AnalizadorSpec extends AnyFreeSpec {
 
   "Nivel necesario" - {
     "dado un grupo y un calabozo, se obtiene los niveles necesarios para recorrer calabozo" in {
-      val magoAprendizVislumbrar: Aventurero = Aventurero(Caracteristica(50, 100, nivel = 0), Mago(Set((Vislumbrar, 8))), Introvertido, Heroico)
-      val ladronInicial: Aventurero = Aventurero(Caracteristica(50, 10, nivel = 0), Ladron(2), Introvertido, Heroico)
-      val grupoAmateur = Grupo(List(guerreroLento, ladronInicial, magoAprendizVislumbrar))
+      val magoAprendizDeVislumbrar = Aventurero(Caracteristica(50, 100, nivel = 0), Mago(Set((Vislumbrar, 8))), Introvertido, Heroico)
+      val ladronInicial = Aventurero(Caracteristica(50, 10, nivel = 0), Ladron(2), Introvertido, Heroico)
+      val grupoAmateur = Grupo(List(guerreroLento, ladronInicial, magoAprendizDeVislumbrar))
 
       val puerta: Puerta = PuertaCerrada(
         Habitacion(NoPasaNada,
-          Set(
+          List(
             PuertaCerrada(Habitacion(NoPasaNada)),
             PuertaCerrada(Habitacion(TrampaDeLeones)),
             PuertaEncantada(Vislumbrar,
-              Habitacion(TrampaDeLeones, Set(PuertaEscondida(Habitacion(Encuentro(perdidoDebil)))))
+              Habitacion(TrampaDeLeones, List(PuertaEscondida(Habitacion(Encuentro(perdidoDebil)))))
             ),
             PuertaEncantada(Vislumbrar, Habitacion(MuchosDardos())),
             PuertaEncantada(Vislumbrar, Habitacion(MuchosDardos()), salida = true)
@@ -89,7 +89,7 @@ class AnalizadorSpec extends AnyFreeSpec {
       val nivelesNecesarios = analizador.nivelesNecesarios(grupoAmateur, calabozo)
 
       assert(nivelesNecesarios.isSuccess)
-      assert(nivelesNecesarios.get == 6)
+      assert(nivelesNecesarios.get == 8)
     }
   }
 }

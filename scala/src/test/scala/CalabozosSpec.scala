@@ -29,7 +29,7 @@ class CalabozosSpec extends AnyFreeSpec {
       val grupo = Grupo(List(guerreroLento, ladronSinHabilidad))
       val puerta: Puerta = PuertaCerrada(
         Habitacion(NoPasaNada,
-          Set(
+          List(
             PuertaCerrada(Habitacion(NoPasaNada), salida = true)
           )
         )
@@ -38,7 +38,7 @@ class CalabozosSpec extends AnyFreeSpec {
 
       // TODO: como validar por isFailure??
       assertThrows[NoSePuedeAbrirPuertaException] {
-        calabozo.recorrer(grupo)
+        calabozo.recorrer(grupo).get
       }
     }
 
@@ -46,7 +46,7 @@ class CalabozosSpec extends AnyFreeSpec {
       val grupo = Grupo(List(magoConoceVislumbrar, ladronAbrePuertaCerrada))
       val puerta: Puerta = PuertaCerrada(
         Habitacion(NoPasaNada,
-          Set(
+          List(
             PuertaCerrada(Habitacion(NoPasaNada)),
             PuertaCerrada(Habitacion(TrampaDeLeones)),
             PuertaEncantada(Vislumbrar, Habitacion(TrampaDeLeones)),
@@ -57,7 +57,7 @@ class CalabozosSpec extends AnyFreeSpec {
       val calabozo = Calabozo(puertaPrincipal = puerta)
 
       assertThrows[GrupoMuertoException] {
-        calabozo.recorrer(grupo)
+        calabozo.recorrer(grupo).get
       }
     }
 
@@ -65,7 +65,7 @@ class CalabozosSpec extends AnyFreeSpec {
       val grupo = Grupo(List(magoConoceVislumbrarYEsLento, ladronAbrePuertaCerrada, guerreroLento))
       val puerta: Puerta = PuertaCerrada(
         Habitacion(NoPasaNada,
-          Set(
+          List(
             PuertaCerrada(Habitacion(TrampaDeLeones)),
             PuertaEncantada(Vislumbrar, Habitacion(TrampaDeLeones)),
             PuertaEncantada(Vislumbrar, Habitacion(MuchosDardos()), salida = true)
@@ -75,7 +75,7 @@ class CalabozosSpec extends AnyFreeSpec {
       val calabozo = Calabozo(puertaPrincipal = puerta)
 
       assertThrows[NoHayPuertasParaAbrirException] {
-        calabozo.recorrer(grupo)
+        calabozo.recorrer(grupo).get
       }
     }
 
@@ -83,7 +83,7 @@ class CalabozosSpec extends AnyFreeSpec {
       val grupo = Grupo(List(magoConoceVislumbrar, ladronAbrePuertaCerrada, guerreroLento))
       val puerta: Puerta = PuertaCerrada(
         Habitacion(NoPasaNada,
-          Set(
+          List(
             PuertaCerrada(Habitacion(NoPasaNada)),
             PuertaCerrada(Habitacion(TrampaDeLeones)),
             PuertaEncantada(Vislumbrar, Habitacion(TrampaDeLeones)),
@@ -100,11 +100,11 @@ class CalabozosSpec extends AnyFreeSpec {
       val grupo = Grupo(List(magoConoceVislumbrar, ladronAbrePuertaCerrada, guerreroLento))
       val puerta: Puerta = PuertaCerrada(
         Habitacion(NoPasaNada,
-          Set(
+          List(
             PuertaCerrada(Habitacion(NoPasaNada)),
             PuertaCerrada(Habitacion(TrampaDeLeones)),
             PuertaEncantada(Vislumbrar,
-              Habitacion(TrampaDeLeones, Set(PuertaEscondida(Habitacion(Encuentro(perdidoDebil)))))
+              Habitacion(TrampaDeLeones, List(PuertaEscondida(Habitacion(Encuentro(perdidoDebil)))))
             ),
             PuertaEncantada(Vislumbrar, Habitacion(MuchosDardos())),
             PuertaEncantada(Vislumbrar, Habitacion(MuchosDardos()), salida = true)
@@ -120,7 +120,7 @@ class CalabozosSpec extends AnyFreeSpec {
       val grupo = Grupo(List(liderGuerreroHeroico, magoConoceVislumbrar, ladronAbrePuertaCerrada, guerreroLento))
       val puerta: Puerta = PuertaCerrada(
         Habitacion(NoPasaNada,
-          Set(
+          List(
             PuertaCerrada(Habitacion(NoPasaNada)),
             PuertaCerrada(Habitacion(TrampaDeLeones), salida = true),
             PuertaEncantada(Vislumbrar, Habitacion(TrampaDeLeones)),
@@ -132,42 +132,5 @@ class CalabozosSpec extends AnyFreeSpec {
 
       assert(calabozo.recorrer(grupo).isSuccess)
     }
-
-
-
-
-    //    "un calabozo con puertas cerradas puede ser recorrido por un grupo con ladron habilidoso" in {
-    //      val grupo = Grupo(List(guerrero, ladronAbrePuertaCerrada))
-    //      val puerta: Puerta = PuertaCerrada(
-    //        Habitacion(NoPasaNada, Set(PuertaCerrada(Habitacion(NoPasaNada), salida = true)))
-    //      )
-    //      val calabozo = Calabozo(puerta, Set(), puertaSalida)
-    //
-    //      assert(calabozo.recorrer(grupo).isSuccess)
-    //    }
-    //
-    //    "un calabozo con puertas cerradas puede ser recorrido por un grupo con ladron y ganzuas" in {
-    //      val grupo = Grupo(List(guerrero, ladronSinHabilidad))
-    //      val puerta: Puerta = PuertaCerrada(
-    //        Habitacion(NoPasaNada, Set(PuertaCerrada(Habitacion(NoPasaNada), salida = true)))
-    //      )
-    //      val calabozo = Calabozo(puerta, Set(), puertaSalida)
-    //
-    //      assert(calabozo.recorrer(grupo.agregarItem(Ganzuas)).isSuccess)
-    //    }
-    //
-    //    "un calabozo con puertas cerradas no puede ser recorrido por un grupo sin ladron habilidoso ni ganzuas" in {
-    //      val grupo = Grupo(List(guerrero, ladronSinHabilidad))
-    //      val puerta: Puerta = PuertaCerrada(
-    //        Habitacion(NoPasaNada, Set(PuertaCerrada(Habitacion(NoPasaNada), salida = true)))
-    //      )
-    //      val calabozo = Calabozo(puerta, Set(), puertaSalida)
-    //
-    //      // TODO: como validar por isFailure??
-    //      assertThrows[NoSePuedeAbrirPuertaException] {
-    //        calabozo.recorrer(grupo)
-    //      }
-    //    }
   }
-
 }
