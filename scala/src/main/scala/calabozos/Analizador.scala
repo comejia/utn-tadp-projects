@@ -4,6 +4,8 @@ import scala.util.{Failure, Success, Try}
 
 object analizador {
 
+  var nivelMaximo: Int = 20
+
   def mejorGrupo(grupos: List[Grupo], calabozo: Calabozo): Try[Grupo] = Try {
     grupos.reduce((g1, g2) => {
       (calabozo.recorrer(g1), calabozo.recorrer(g2)) match {
@@ -16,6 +18,7 @@ object analizador {
   }
 
   def nivelesNecesarios(grupo: Grupo, calabozo: Calabozo, iteracion: Int = 0): Try[Int] = Try {
+    if(iteracion >= nivelMaximo) throw MaximoDeIntentosException(grupo)
     if(calabozo.recorrer(grupo).isFailure) throw GrupoNoPudoRecorrerCalabozo(grupo)
     return Try(iteracion)
   }.recover { case _: GrupoNoPudoRecorrerCalabozo =>
