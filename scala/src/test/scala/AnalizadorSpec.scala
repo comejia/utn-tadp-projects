@@ -36,7 +36,7 @@ class AnalizadorSpec extends AnyFreeSpec {
       val mejorGrupo = analizador.mejorGrupo(List(grupoNoPasaNada, grupoPasaAlgunosObstaculos, grupoPasaTodo), calabozo)
 
       assert(mejorGrupo.isSuccess)
-      assert(mejorGrupo.get.puntaje() == 12)
+      assert(mejorGrupo.get.puntaje() == 11)
     }
 
     "si ningun grupo recorre el calabozo, se lanza excepcion" in {

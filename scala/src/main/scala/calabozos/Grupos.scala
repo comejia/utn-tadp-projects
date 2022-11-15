@@ -31,6 +31,8 @@ case class Grupo(heroes: List[Aventurero],
 
   def tamanioGrupo(): Int = aventurerosVivos().size
 
+  def tamanioCofre(): Int = cofreComun.size
+
   def tieneItem(item: Item): Boolean = cofreComun.contains(item)
 
   def agregarPuertaAbierta(puerta: Puerta): Grupo =
@@ -65,7 +67,7 @@ case class Grupo(heroes: List[Aventurero],
     else grupoAfectado
   }
 
-  def puntaje(): Int = heroesVivos() * 10 - heroesMuertos() * 5 + tamanioGrupo() + nivelMasAlto()
+  def puntaje(): Int = heroesVivos() * 10 - heroesMuertos() * 5 + tamanioCofre() + nivelMasAlto()
 }
 
 
